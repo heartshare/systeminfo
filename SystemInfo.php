@@ -142,6 +142,39 @@ class SystemInfo {
         }
     }
 
+    public static function getTotalMem(){
+        if(self::getIsWindows()){
+            //todo
+        } else {
+            $meminfo = self::getMemoryInfo();
+            return isset($meminfo['MemTotal']) ? $meminfo['MemTotal'] : false;
+        }
+    }
+    public static function getFreeMem(){
+        if(self::getIsWindows()){
+            //todo
+        } else {
+            $meminfo = self::getMemoryInfo();
+            return isset($meminfo['MemFree']) ? $meminfo['MemFree'] : false;
+        }
+    }
+    public static function getTotalSwap(){
+        if(self::getIsWindows()){
+            //todo
+        } else {
+            $meminfo = self::getMemoryInfo();
+            return isset($meminfo['SwapTotal']) ? $meminfo['SwapTotal'] : false;
+        }
+    }
+    public static function getFreeSwap(){
+        if(self::getIsWindows()){
+            //todo
+        } else {
+            $meminfo = self::getMemoryInfo();
+            return isset($meminfo['SwapFree']) ? $meminfo['SwapFree'] : false;
+        }
+    }
+
     public static function getDiskUsage(){
         // todo: Function
     }
