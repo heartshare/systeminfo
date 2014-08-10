@@ -164,7 +164,7 @@ class SystemInfo {
             //todo
         } else {
             $meminfo = self::getMemoryInfo();
-            return isset($meminfo['SwapTotal']) ? intval(['SwapTotal']) * 1024 : false;
+            return isset($meminfo['SwapTotal']) ? intval($meminfo['SwapTotal']) * 1024 : false;
         }
     }
     public static function getFreeSwap(){
