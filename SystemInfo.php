@@ -147,9 +147,11 @@ class SystemInfo {
     }
 
     public static function getDbInfo(\PDO $connection){
-        if(is_a($connection, 'PDO')){
-            return $connection->getAttribute(\PDO::ATTR_SERVER_INFO);
-        }
+        return $connection->getAttribute(\PDO::ATTR_SERVER_INFO);
+    }
+
+    public static function getDbType(\PDO $connection){
+        return $connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
     }
 
     public static function getDbVersion($connection){
