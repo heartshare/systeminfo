@@ -13,6 +13,18 @@ class SystemInfo {
         return php_uname('s r v');
     }
 
+    public static function getLinuxOSRelease(){
+        if(!self::getIsWindows()) {
+            return shell_exec('/usr/bin/lsb_release -ds');
+        }
+    }
+
+    public static function getLinuxKernelVersion(){
+        if(!self::getIsWindows()){
+            return shell_exec('/bin/uname -r');
+        }
+    }
+
     public static function getHostname(){
         return php_uname('n');
     }
@@ -124,10 +136,6 @@ class SystemInfo {
             }
             return $meminfo;
         }
-    }
-
-    public static function getLinuxKernel(){
-        // todo: Function
     }
 
     public static function getDiskUsage(){
