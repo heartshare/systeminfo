@@ -122,8 +122,9 @@ class SystemInfo {
         return $ping;
     }
 
-    public static function getLoadAverage($key = 0){
-        return sys_getloadavg(); // todo: key
+    public static function getLoadAverage($key = false){
+        $la = array_combine([1,5,15], sys_getloadavg());
+        return isset($la[$key]) ? $la[$key] : $la;
     }
 
     public static function getMemoryInfo(){
