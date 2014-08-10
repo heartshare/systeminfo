@@ -70,7 +70,7 @@ class SystemInfo {
         }
     }
 
-    public function getCpuCores(){
+    public static function getCpuCores(){
         return self::getCpuinfo('cpu cores');
     }
 
