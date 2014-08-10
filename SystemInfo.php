@@ -147,7 +147,7 @@ class SystemInfo {
             //todo
         } else {
             $meminfo = self::getMemoryInfo();
-            return isset($meminfo['MemTotal']) ? $meminfo['MemTotal'] : false;
+            return isset($meminfo['MemTotal']) ? intval($meminfo['MemTotal']) * 1024 : false;
         }
     }
     public static function getFreeMem(){
@@ -155,7 +155,7 @@ class SystemInfo {
             //todo
         } else {
             $meminfo = self::getMemoryInfo();
-            return isset($meminfo['MemFree']) ? $meminfo['MemFree'] : false;
+            return isset($meminfo['MemFree']) ? intval($meminfo['MemFree']) * 1024 : false;
         }
     }
     public static function getTotalSwap(){
@@ -163,7 +163,7 @@ class SystemInfo {
             //todo
         } else {
             $meminfo = self::getMemoryInfo();
-            return isset($meminfo['SwapTotal']) ? $meminfo['SwapTotal'] : false;
+            return isset($meminfo['SwapTotal']) ? intval(['SwapTotal']) * 1024 : false;
         }
     }
     public static function getFreeSwap(){
@@ -171,7 +171,7 @@ class SystemInfo {
             //todo
         } else {
             $meminfo = self::getMemoryInfo();
-            return isset($meminfo['SwapFree']) ? $meminfo['SwapFree'] : false;
+            return isset($meminfo['SwapFree']) ? intval($meminfo['SwapFree']) * 1024 : false;
         }
     }
 
