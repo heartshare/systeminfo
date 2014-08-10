@@ -134,13 +134,13 @@ class SystemInfo {
             function stat(){
                 $stat = @file_get_contents('/proc/stat');
                 $stat = explode("\n", $stat);
-                $result = array_fill(0, self::getCpuCores(), 0);
+                $result = [];
                 foreach($stat as $v){
                     $v = explode(" ", $v);
                     if(
                         isset($v[0])
                         && strpos(strtolower($v[0]), 'cpu') === 0
-                        && preg_match('/cpu[\d]/g', $v[0])
+                        && preg_match('/cpu[\d]/sim', $v[0])
                     ){
                         $result[] = array_slice($v, 0, 4);
                     }
@@ -154,7 +154,7 @@ class SystemInfo {
             $usage = [];
             for($i = 0; $i < self::getCpuCores(); $i++){
                 $total = array_sum(array_slice($stat2[$i], 0, 3)) - array_sum(array_slice($stat1[$i], 0, 3));
-                $idle = $stat2[$i][4] - $stat1[$i][4];
+                $idle = $stat2[$i][3] - $stat1[$i][3];
                 $usage[$i] = ($total - $idle) / $total;
             }
             return $usage;
