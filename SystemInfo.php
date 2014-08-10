@@ -117,7 +117,7 @@ class SystemInfo {
                 : "/bin/ping -qc {$count} {$hosts[$i]} | awk -F/ '/^rtt/ { print $5 }'";
             $result = array();
             exec($command, $result);
-            $ping[$hosts[$i]] = $result[0];
+            $ping[$hosts[$i]] = isset($result[0]) ? $result[0] : false;
         }
         return $ping;
     }
