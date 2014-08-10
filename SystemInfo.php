@@ -124,7 +124,41 @@ class SystemInfo {
 
     public static function getLoadAverage($key = false){
         $la = array_combine([1,5,15], sys_getloadavg());
-        return isset($la[$key]) ? $la[$key] : $la;
+        return ($key !== false && isset($la[$key])) ? $la[$key] : $la;
+    }
+
+    public static function getProcessorUsage(){
+        if(self::getIsWindows()){
+            // todo
+        } else {
+            function stat(){
+                $stat = @file_get_contents('/proc/stat');
+                $stat = explode("\n", $stat);
+                $result = array_fill(0, self::getCpuCores(), 0);
+                foreach($stat as $v){
+                    $v = explode(" ", $v);
+                    if(
+                        isset($v[0])
+                        && strpos(strtolower($v[0]), 'cpu') === 0
+                        && preg_match('/cpu[\d]/g', $v[0])
+                    ){
+                        $result[] = array_slice($v, 0, 4);
+                    }
+
+                }
+                return $result;
+            }
+            $stat1 = stat();
+            sleep(1);
+            $stat2 = stat();
+            $usage = [];
+            for($i = 0; $i < self::getCpuCores(); $i++){
+                $total = array_sum(array_slice($stat2[$i], 0, 3)) - array_sum(array_slice($stat1[$i], 0, 3));
+                $idle = $stat2[$i][4] - $stat1[$i][4];
+                $usage[$i] = ($total - $idle) / $total;
+            }
+            return $usage;
+        }
     }
 
     public static function getMemoryInfo(){
@@ -159,6 +193,7 @@ class SystemInfo {
             return isset($meminfo['MemFree']) ? intval($meminfo['MemFree']) * 1024 : false;
         }
     }
+
     public static function getTotalSwap(){
         if(self::getIsWindows()){
             //todo
@@ -167,6 +202,7 @@ class SystemInfo {
             return isset($meminfo['SwapTotal']) ? intval($meminfo['SwapTotal']) * 1024 : false;
         }
     }
+
     public static function getFreeSwap(){
         if(self::getIsWindows()){
             //todo
