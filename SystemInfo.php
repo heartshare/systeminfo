@@ -70,6 +70,10 @@ class SystemInfo {
         }
     }
 
+    public function getCpuCores(){
+        return self::getCpuinfo('cpu cores');
+    }
+
     public static function getServerIP(){
         return self::getIsISS() ? $_SERVER['LOCAL_ADDR'] : $_SERVER['SERVER_ADDR'];
     }
@@ -140,5 +144,19 @@ class SystemInfo {
 
     public static function getDiskUsage(){
         // todo: Function
+    }
+
+    public static function getDbInfo(\PDO $connection){
+        if(is_a($connection, 'PDO')){
+            return $connection->getAttribute(\PDO::ATTR_SERVER_INFO);
+        }
+    }
+
+    public static function getDbVersion($connection){
+        if(is_a($connection, 'PDO')){
+            return $connection->getAttribute(\PDO::ATTR_SERVER_VERSION);
+        } else {
+            return mysqli_get_server_info($connection);
+        }
     }
 } 
