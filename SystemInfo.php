@@ -62,6 +62,10 @@ class SystemInfo {
         return self::getIsISS() ? $_SERVER['LOCAL_ADDR'] : $_SERVER['SERVER_ADDR'];
     }
 
+    public static function getExternalIP(){
+        return @file_get_contents('http://ipecho.net/plain');
+    }
+
     public static function getServerSoftware(){
         return $_SERVER['SERVER_SOFTWARE'];
     }
