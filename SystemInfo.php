@@ -127,7 +127,7 @@ class SystemInfo {
         return ($key !== false && isset($la[$key])) ? $la[$key] : $la;
     }
 
-    public static function getProcessorUsage($interval = 0.5){
+    public static function getCpuUsage($interval = 0.5){
         if(self::getIsWindows()){
             // todo
         } else {
