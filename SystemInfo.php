@@ -4,39 +4,67 @@
  */
 namespace trntv\systeminfo;
 
+/**
+ * Class SystemInfo
+ * @package trntv\systeminfo
+ */
 class SystemInfo {
+    /**
+     * @return string
+     */
     public static function getPhpVersion(){
         return phpversion();
     }
 
+    /**
+     * @return string
+     */
     public static function getOS(){
         return php_uname('s r v');
     }
 
+    /**
+     * @return string
+     */
     public static function getLinuxOSRelease(){
         if(!self::getIsWindows()) {
             return shell_exec('/usr/bin/lsb_release -ds');
         }
     }
 
+    /**
+     * @return string
+     */
     public static function getLinuxKernelVersion(){
         if(!self::getIsWindows()){
             return shell_exec('/bin/uname -r');
         }
     }
 
+    /**
+     * @return string
+     */
     public static function getHostname(){
         return php_uname('n');
     }
 
+    /**
+     * @return string
+     */
     public static function getArchitecture(){
         return php_uname('m');
     }
 
+    /**
+     * @return bool
+     */
     public static function getIsWindows(){
         return strpos(strtolower(PHP_OS),'win') === 0;
     }
 
+    /**
+     * @return null
+     */
     public static function getUptime(){
         if(self::getIsWindows()){
             return null; // todo: Windows
@@ -49,6 +77,10 @@ class SystemInfo {
         }
     }
 
+    /**
+     * @param bool $key
+     * @return array|null
+     */
     public static function getCpuinfo($key = false){
         if(self::getIsWindows()){
             return null; // todo: Windows
@@ -70,42 +102,77 @@ class SystemInfo {
         }
     }
 
+    /**
+     * @return array|null
+     */
     public static function getCpuCores(){
         return self::getCpuinfo('cpu cores');
     }
 
+    /**
+     * @return mixed
+     */
     public static function getServerIP(){
         return self::getIsISS() ? $_SERVER['LOCAL_ADDR'] : $_SERVER['SERVER_ADDR'];
     }
 
+    /**
+     * @return string
+     */
     public static function getExternalIP(){
         return @file_get_contents('http://ipecho.net/plain');
     }
 
+    /**
+     * @return mixed
+     */
     public static function getServerSoftware(){
         return $_SERVER['SERVER_SOFTWARE'];
     }
 
+    /**
+     * @return bool
+     */
     public static function getIsISS(){
         return false; // todo: ISS
     }
+
+    /**
+     * @return bool
+     */
     public static function getIsNginx(){
         return strpos(strtolower(self::getServerSoftware()), 'nginx') !== false;
     }
+
+    /**
+     * @return bool
+     */
     public static function getIsApache(){
         return strpos(strtolower(self::getServerSoftware()), 'apache') !== false;
     }
 
+    /**
+     * @param int $what
+     * @return string
+     */
     public static function getPhpInfo($what = -1){
         ob_start();
         phpinfo($what);
         return ob_get_clean();
     }
 
+    /**
+     * @return array
+     */
     public static function getPHPDisabledFunctions(){
         return array_map('trim',explode(',',ini_get('disable_functions')));
     }
 
+    /**
+     * @param array $hosts
+     * @param int $count
+     * @return array
+     */
     public static function getPing(array $hosts = null, $count = 2){
         if(!$hosts){
             $hosts = array("gnu.org", "github.com", "wikipedia.org");
@@ -122,12 +189,20 @@ class SystemInfo {
         return $ping;
     }
 
+    /**
+     * @param integer $key
+     * @return mixed string|array
+     */
     public static function getLoadAverage($key = false){
         $la = array_combine([1,5,15], sys_getloadavg());
         return ($key !== false && isset($la[$key])) ? $la[$key] : $la;
     }
 
-    public static function getCpuUsage($interval = 0.5){
+    /**
+     * @param int $interval
+     * @return array
+     */
+    public static function getCpuUsage($interval = 1){
         if(self::getIsWindows()){
             // todo
         } else {
@@ -161,6 +236,9 @@ class SystemInfo {
         }
     }
 
+    /**
+     * @return array
+     */
     public static function getMemoryInfo(){
         if(self::getIsWindows()){
             return null; // todo: Windows
@@ -177,6 +255,9 @@ class SystemInfo {
         }
     }
 
+    /**
+     * @return bool|int
+     */
     public static function getTotalMem(){
         if(self::getIsWindows()){
             //todo
@@ -185,6 +266,10 @@ class SystemInfo {
             return isset($meminfo['MemTotal']) ? intval($meminfo['MemTotal']) * 1024 : false;
         }
     }
+
+    /**
+     * @return bool|int
+     */
     public static function getFreeMem(){
         if(self::getIsWindows()){
             //todo
@@ -194,6 +279,9 @@ class SystemInfo {
         }
     }
 
+    /**
+     * @return bool|int
+     */
     public static function getTotalSwap(){
         if(self::getIsWindows()){
             //todo
@@ -203,6 +291,9 @@ class SystemInfo {
         }
     }
 
+    /**
+     * @return bool|int
+     */
     public static function getFreeSwap(){
         if(self::getIsWindows()){
             //todo
@@ -212,18 +303,33 @@ class SystemInfo {
         }
     }
 
+    /**
+     *
+     */
     public static function getDiskUsage(){
         // todo: Function
     }
 
+    /**
+     * @param \PDO $connection
+     * @return mixed
+     */
     public static function getDbInfo(\PDO $connection){
         return $connection->getAttribute(\PDO::ATTR_SERVER_INFO);
     }
 
+    /**
+     * @param \PDO $connection
+     * @return mixed
+     */
     public static function getDbType(\PDO $connection){
         return $connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
     }
 
+    /**
+     * @param $connection
+     * @return string
+     */
     public static function getDbVersion($connection){
         if(is_a($connection, 'PDO')){
             return $connection->getAttribute(\PDO::ATTR_SERVER_VERSION);
