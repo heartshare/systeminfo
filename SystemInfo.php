@@ -142,7 +142,7 @@ class SystemInfo {
                         && strpos(strtolower($v[0]), 'cpu') === 0
                         && preg_match('/cpu[\d]/sim', $v[0])
                     ){
-                        $result[] = array_slice($v, 1, 5);
+                        $result[] = array_slice($v, 1, 4);
                     }
 
                 }
@@ -154,7 +154,7 @@ class SystemInfo {
             $usage = [];
             for($i = 0; $i < self::getCpuCores(); $i++){
                 $total = array_sum($stat2[$i]) - array_sum($stat1[$i]);
-                $idle = $stat2[$i][4] - $stat1[$i][4];
+                $idle = $stat2[$i][3] - $stat1[$i][3];
                 $usage[$i] = ($total - $idle) / $total;
             }
             return $usage;
