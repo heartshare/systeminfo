@@ -127,7 +127,7 @@ class SystemInfo {
         return ($key !== false && isset($la[$key])) ? $la[$key] : $la;
     }
 
-    public static function getProcessorUsage(){
+    public static function getProcessorUsage($interval = 0.5){
         if(self::getIsWindows()){
             // todo
         } else {
@@ -142,19 +142,19 @@ class SystemInfo {
                         && strpos(strtolower($v[0]), 'cpu') === 0
                         && preg_match('/cpu[\d]/sim', $v[0])
                     ){
-                        $result[] = array_slice($v, 0, 4);
+                        $result[] = array_slice($v, 1, 5);
                     }
 
                 }
                 return $result;
             }
             $stat1 = stat();
-            sleep(1);
+            usleep($interval * 1000000);
             $stat2 = stat();
             $usage = [];
             for($i = 0; $i < self::getCpuCores(); $i++){
-                $total = array_sum(array_slice($stat2[$i], 0, 3)) - array_sum(array_slice($stat1[$i], 0, 3));
-                $idle = $stat2[$i][3] - $stat1[$i][3];
+                $total = array_sum($stat2[$i]) - array_sum($stat1[$i]);
+                $idle = $stat2[$i][4] - $stat1[$i][4];
                 $usage[$i] = ($total - $idle) / $total;
             }
             return $usage;
