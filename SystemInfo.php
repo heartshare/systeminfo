@@ -120,7 +120,7 @@ class SystemInfo {
      * @return string
      */
     public static function getExternalIP(){
-        return @file_get_contents('http://ipecho.net/plain');
+        return gethostbyname($_SERVER['SERVER_NAME']);
     }
 
     /**
