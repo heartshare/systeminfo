@@ -121,7 +121,7 @@ class SystemInfo {
      */
     public static function getExternalIP(){
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://www.example.com/");
+        curl_setopt($ch, CURLOPT_URL, "http://ipecho.net/plain");
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, 700);
         $address = curl_exec($ch);
