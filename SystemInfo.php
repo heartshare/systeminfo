@@ -120,7 +120,13 @@ class SystemInfo {
      * @return string
      */
     public static function getExternalIP(){
-        return gethostbyname($_SERVER['SERVER_NAME']);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "http://www.example.com/");
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 700);
+        $address = curl_exec($ch);
+        curl_close($ch);
+        return $address;
     }
 
     /**
