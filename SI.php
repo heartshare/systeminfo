@@ -5,10 +5,11 @@
 namespace trntv\systeminfo;
 
 /**
- * Class SystemInfo
+ * Class SI
+ * system information helper
  * @package trntv\systeminfo
  */
-class SystemInfo {
+class SI {
     /**
      * @return string
      */

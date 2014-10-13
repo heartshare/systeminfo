@@ -1,7 +1,7 @@
 {
-    "name": "trntv/system-info",
+    "name": "trntv/systeminfo",
     "description": "Simple system information helper",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "license": "MIT",
     "authors": [
         {
